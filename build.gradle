@@ -15,6 +15,8 @@ repositories {
 
 dependencies {
 	implementation "org.projectlombok:lombok:1.18.+"
+	annotationProcessor "org.projectlombok:lombok:1.18.+"
+
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
@@ -33,8 +35,28 @@ dependencies {
 	testImplementation "io.rest-assured:rest-assured:4.1.2"
 	testImplementation "io.rest-assured:json-path:4.1.2"
 	testImplementation "io.rest-assured:xml-path:4.1.2"
+
+	testImplementation "org.projectlombok:lombok:1.18.+"
+	testAnnotationProcessor "org.projectlombok:lombok:1.18.+"
 }
 
 test {
 	useJUnitPlatform()
+}
+
+configurations {
+	cucumberRuntime {
+		extendsFrom testImplementation
+	}
+}
+
+task integrationTests() {
+	dependsOn assemble, compileTestJava
+	doLast {
+		javaexec {
+			main = "io.cucumber.core.cli.Main"
+			classpath = configurations.cucumberRuntime +  sourceSets.main.output + sourceSets.test.output
+			args = ['--plugin', 'pretty', '--glue', 'features', 'src/test/resources']
+		}
+	}
 }
