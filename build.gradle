@@ -56,7 +56,10 @@ task integrationTests() {
 		javaexec {
 			main = "io.cucumber.core.cli.Main"
 			classpath = configurations.cucumberRuntime +  sourceSets.main.output + sourceSets.test.output
-			args = ['--plugin', 'pretty', '--glue', 'features', 'src/test/resources']
+			args = ['--plugin', 'pretty',
+					'--plugin', 'html:build/reports/cucumber',
+					'--glue', 'features', 'src/test/resources'
+			]
 		}
 	}
 }
