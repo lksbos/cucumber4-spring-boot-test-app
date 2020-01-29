@@ -4,6 +4,7 @@ import com.example.cucumber.CucumberAppApplication;
 import features.config.TestConfiguration;
 import io.cucumber.java.Before;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -11,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, properties = "server.port=8888")
 @ContextConfiguration(classes = {CucumberAppApplication.class, TestConfiguration.class})
 @ActiveProfiles("test")
+@ComponentScan("features.config")
 @DirtiesContext
 public class ContextLoader {
     /**
